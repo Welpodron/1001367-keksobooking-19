@@ -32,5 +32,5 @@
     toggleMap: toggleMap,
     insertPins: insertPins,
     pinsMap: PINS_MAP
-  }
+  };
 })();

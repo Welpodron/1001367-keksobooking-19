@@ -49,5 +49,5 @@
 
   window.data = {
     getAdvertisementsArray: getAdvertisementsArray
-  }
+  };
 })();

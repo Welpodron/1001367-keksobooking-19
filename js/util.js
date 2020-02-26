@@ -18,5 +18,5 @@
     getRandomIntInclusive: getRandomIntInclusive,
     getRandomArrayElement: getRandomArrayElement,
     getRandomLengthArray: getRandomLengthArray
-  }
+  };
 })();
