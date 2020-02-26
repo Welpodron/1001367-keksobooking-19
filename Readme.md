@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Даниил Салип](https://up.htmlacademy.ru/javascript/19/user/1001367).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Прибитков](https://up.htmlacademy.ru/javascript/19/user/1061259).
 
 ---
 
