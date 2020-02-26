@@ -9,7 +9,7 @@ var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 var PINS_MAP = document.querySelector('.map__pins');
 
-var types = ['palace', 'flat', 'house', 'bungalo'] ;
+var types = ['palace', 'flat', 'house', 'bungalo'];
 var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var checkins = ['12:00', '13:00', '14:00'];
@@ -33,11 +33,11 @@ function getAdvertisement(userId) {
   var locationY = getRandomIntInclusive(Y_MIN, Y_MAX);
   var advertisement = {
     author: {
-      avatar: `img/avatars/user0${userId+1}.png`
+      avatar: 'img/avatars/user0' + (userId + 1) + '.png'
     },
     offer: {
       title: 'Заголовок предложения',
-      address: `${locationX}, ${locationY}`,
+      address: locationX + ', ' + locationY,
       price: getRandomIntInclusive(100, 1000),
       type: getRandomArrayElement(types),
       rooms: getRandomIntInclusive(1, 4),
@@ -71,8 +71,8 @@ function toggleMap() {
 
 function generatePin(advertisement) {
   var pin = PIN_TEMPLATE.cloneNode(true);
-  pin.style.left = `${advertisement.location.x+PIN_WIDTH/2}px`;
-  pin.style.top = `${advertisement.location.y+PIN_HEIGHT}px`;
+  pin.style.left = advertisement.location.x - PIN_WIDTH / 2 + 'px';
+  pin.style.top = advertisement.location.y - PIN_HEIGHT + 'px';
   pin.querySelector('img').src = advertisement.author.avatar;
   pin.querySelector('img').alt = advertisement.offer.title;
   return pin;
@@ -86,4 +86,6 @@ function insertPins(arr, target) {
   target.appendChild(fragment);
 }
 
-insertPins(getAdvertisementsArray(),PINS_MAP);
+toggleMap();
+
+insertPins(getAdvertisementsArray(), PINS_MAP);
