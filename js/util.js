@@ -14,9 +14,20 @@
     return arr.slice(randomStart, getRandomIntInclusive(randomStart, arr.length));
   }
 
+  function getDeclension(num, arr) {
+    if (num % 10 === 1 && num % 100 !== 11) {
+      return num + ' ' + arr[0];
+    }
+    if (num % 10 > 1 && num % 10 < 5 && (num % 100 < 12 || num % 100 > 14)) {
+      return num + ' ' + arr[1];
+    }
+    return num + ' ' + arr[2];
+  }
+
   window.util = {
     getRandomIntInclusive: getRandomIntInclusive,
     getRandomArrayElement: getRandomArrayElement,
-    getRandomLengthArray: getRandomLengthArray
+    getRandomLengthArray: getRandomLengthArray,
+    getDeclension: getDeclension
   };
 })();

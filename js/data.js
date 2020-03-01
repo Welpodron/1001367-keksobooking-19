@@ -6,6 +6,8 @@
   var Y_MIN = 130;
   var Y_MAX = 630;
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+  var ROOMS_DECLENSION = ['комната', 'комнаты', 'комнат'];
+  var GUESTS_DECLENSION = ['гостя', 'гостей', 'гостей'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var CHECKINS = ['12:00', '13:00', '14:00'];
@@ -16,15 +18,15 @@
     var locationY = window.util.getRandomIntInclusive(Y_MIN, Y_MAX);
     var advertisement = {
       author: {
-        avatar: 'img/avatars/user0' + (userId + 1) + '.png'
+        avatar: 'img/avatars/user0' + userId + '.png'
       },
       offer: {
         title: 'Заголовок предложения',
         address: locationX + ', ' + locationY,
         price: window.util.getRandomIntInclusive(100, 1000),
         type: window.util.getRandomArrayElement(TYPES),
-        rooms: window.util.getRandomIntInclusive(1, 4),
-        guests: window.util.getRandomIntInclusive(1, 4),
+        rooms: window.util.getRandomIntInclusive(1, 5),
+        guests: window.util.getRandomIntInclusive(1, 5),
         checkin: window.util.getRandomArrayElement(CHECKINS),
         checkout: window.util.getRandomArrayElement(CHECKOUTS),
         features: window.util.getRandomLengthArray(FEATURES),
@@ -41,13 +43,31 @@
 
   function getAdvertisementsArray() {
     var arr = [];
-    for (var i = 0; i < USERS_NUMBER; i++) {
+    for (var i = 1; i <= USERS_NUMBER; i++) {
       arr.push(getAdvertisement(i));
     }
     return arr;
   }
 
+  function getBuildingType(advertisement) {
+    switch (advertisement.offer.type) {
+      case 'flat':
+        return 'Квартира';
+      case 'bungalo':
+        return 'Бунгало';
+      case 'house':
+        return 'Дом';
+      case 'palace':
+        return 'Дворец';
+    }
+    // Пустой return '' добавлен из-за ошибки npm test и проверки Трэвиса
+    return '';
+  }
+
   window.data = {
-    getAdvertisementsArray: getAdvertisementsArray
+    getAdvertisementsArray: getAdvertisementsArray,
+    getBuildingType: getBuildingType,
+    roomsDeclension: ROOMS_DECLENSION,
+    guestsDeclension: GUESTS_DECLENSION
   };
 })();
