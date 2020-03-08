@@ -23,6 +23,7 @@
         <div class="map__overlay">
           <h2 class="map__title">И снова Токио!</h2>
         </div>
+        <div style="z-index: 500; position: absolute; width: 3px; height: 3px; background: aqua; left: 602px; top: 456px;"></div>
         <button class="map__pin map__pin--main" style="left: 570px; top: 375px;">
           <img src="img/muffin-red.svg" width="40" height="44" draggable="false" alt="Метка объявления">
           <svg viewBox="0 0 70 70" width="156" height="156" aria-label="Метка для поиска жилья">
@@ -84,7 +85,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form ad-form--disabled" method="post" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form ad-form--disabled" method="post" enctype="multipart/form-data" autocomplete="off" action="https://echo.htmlacademy.ru">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -247,12 +248,15 @@
       <button class="error__button">Попробовать снова</button>
     </div>
   </template>
-
   <script src="js/util.js"></script>
   <script src="js/data.js"></script>
   <script src="js/pins.js"></script>
   <script src="js/cards.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/form.js"></script>
+  <script src="js/filter.js"></script>
+  <script src="js/preload.js"></script>
+  <script src="js/validation.js"></script>
   <script src="js/main.js"></script>
-
 </body>
 </html>

@@ -2,9 +2,12 @@
 
 (function () {
   var USERS_NUMBER = 8;
-  var X_MAX = parseInt(getComputedStyle(document.body).maxWidth, 10);
-  var Y_MIN = 130;
-  var Y_MAX = 630;
+  var COORDINATES = {
+    X_MIN: 0,
+    X_MAX: parseInt(getComputedStyle(document.body).maxWidth, 10),
+    Y_MIN: 130,
+    Y_MAX: 630
+  };
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var ROOMS_DECLENSION = ['комната', 'комнаты', 'комнат'];
   var GUESTS_DECLENSION = ['гостя', 'гостей', 'гостей'];
@@ -14,8 +17,8 @@
   var CHECKOUTS = ['12:00', '13:00', '14:00'];
 
   function getAdvertisement(userId) {
-    var locationX = window.util.getRandomIntInclusive(0, X_MAX);
-    var locationY = window.util.getRandomIntInclusive(Y_MIN, Y_MAX);
+    var locationX = window.util.getRandomIntInclusive(COORDINATES.X_MIN, COORDINATES.Y_MAX);
+    var locationY = window.util.getRandomIntInclusive(COORDINATES.Y_MIN, COORDINATES.Y_MAX);
     var advertisement = {
       author: {
         avatar: 'img/avatars/user0' + userId + '.png'
@@ -51,23 +54,40 @@
 
   function getBuildingType(advertisement) {
     switch (advertisement.offer.type) {
-      case 'flat':
-        return 'Квартира';
       case 'bungalo':
         return 'Бунгало';
+      case 'flat':
+        return 'Квартира';
       case 'house':
         return 'Дом';
       case 'palace':
         return 'Дворец';
     }
-    // Пустой return '' добавлен из-за ошибки npm test и проверки Трэвиса
+
     return '';
+  }
+
+  function getBuildingMinPrice(buildingType) {
+    switch (buildingType) {
+      case 'bungalo':
+        return 0;
+      case 'flat':
+        return 1000;
+      case 'house':
+        return 5000;
+      case 'palace':
+        return 10000;
+    }
+
+    return NaN;
   }
 
   window.data = {
     getAdvertisementsArray: getAdvertisementsArray,
     getBuildingType: getBuildingType,
+    getBuildingMinPrice: getBuildingMinPrice,
     roomsDeclension: ROOMS_DECLENSION,
-    guestsDeclension: GUESTS_DECLENSION
+    guestsDeclension: GUESTS_DECLENSION,
+    coordinates: COORDINATES
   };
 })();

@@ -24,10 +24,24 @@
     return num + ' ' + arr[2];
   }
 
+  function disableElements(arr) {
+    arr.forEach(function (element) {
+      element.disabled = true;
+    });
+  }
+
+  function enableElements(arr) {
+    arr.forEach(function (element) {
+      element.disabled = false;
+    });
+  }
+
   window.util = {
     getRandomIntInclusive: getRandomIntInclusive,
     getRandomArrayElement: getRandomArrayElement,
     getRandomLengthArray: getRandomLengthArray,
-    getDeclension: getDeclension
+    getDeclension: getDeclension,
+    disableElements: disableElements,
+    enableElements: enableElements
   };
 })();
