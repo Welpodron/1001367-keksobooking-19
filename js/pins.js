@@ -23,6 +23,11 @@
   PIN_MAIN.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
   PIN_MAIN.SELECTOR.addEventListener('keydown', mainPinEnterHandler);
 
+  var startingCoords = {
+    y: 0,
+    x: 0
+  };
+
   function generatePin(advertisement, index) {
     var pin = PIN.TEMPLATE.cloneNode(true);
     pin.pinIndex = index;
@@ -50,53 +55,54 @@
       setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
       PINS_MAP.addEventListener('click', pinClickHandler);
       PINS_MAP.addEventListener('keydown', pinEnterHandler);
-      var startingCoords = {
+
+      startingCoords = {
         y: evt.clientY,
         x: evt.clientX
       };
 
       document.addEventListener('mousemove', mainPinMouseMoveHandler);
       document.addEventListener('mouseup', mainPinMouseUpHandler);
-
-      function mainPinMouseMoveHandler(evt) {
-        var minX = window.data.coordinates.X_MIN - PIN_MAIN.WIDTH / 2;
-        var maxX = PINS_MAP.offsetWidth - PIN_MAIN.WIDTH / 2;
-        var minY = window.data.coordinates.Y_MIN - PIN_MAIN.FULL_HEIGHT;
-        var maxY = window.data.coordinates.Y_MAX - PIN_MAIN.FULL_HEIGHT;
-
-        var offset = {
-          y: startingCoords.y - evt.clientY,
-          x: startingCoords.x - evt.clientX
-        };
-
-        startingCoords = {
-          y: evt.clientY,
-          x: evt.clientX
-        };
-
-        PIN_MAIN.SELECTOR.style.top = PIN_MAIN.SELECTOR.offsetTop - offset.y + 'px';
-        PIN_MAIN.SELECTOR.style.left = PIN_MAIN.SELECTOR.offsetLeft - offset.x + 'px';
-
-        if (PIN_MAIN.SELECTOR.offsetLeft < minX) {
-          PIN_MAIN.SELECTOR.style.left = minX + 'px';
-        } else if (PIN_MAIN.SELECTOR.offsetLeft > maxX) {
-          PIN_MAIN.SELECTOR.style.left = maxX + 'px';
-        }
-
-        if (PIN_MAIN.SELECTOR.offsetTop < minY) {
-          PIN_MAIN.SELECTOR.style.top = minY + 'px';
-        } else if (PIN_MAIN.SELECTOR.offsetTop > maxY) {
-          PIN_MAIN.SELECTOR.style.top = maxY + 'px';
-        }
-
-        setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
-
-      }
-      function mainPinMouseUpHandler() {
-        document.removeEventListener('mousemove', mainPinMouseMoveHandler);
-        document.removeEventListener('mouseup', mainPinMouseUpHandler);
-      }
     }
+  }
+
+  function mainPinMouseMoveHandler(evt) {
+    var minX = window.data.coordinates.X_MIN - PIN_MAIN.WIDTH / 2;
+    var maxX = PINS_MAP.offsetWidth - Math.floor(PIN_MAIN.WIDTH / 2);
+    var minY = window.data.coordinates.Y_MIN - PIN_MAIN.FULL_HEIGHT;
+    var maxY = window.data.coordinates.Y_MAX - PIN_MAIN.FULL_HEIGHT;
+
+    var offset = {
+      y: startingCoords.y - evt.clientY,
+      x: startingCoords.x - evt.clientX
+    };
+
+    startingCoords = {
+      y: evt.clientY,
+      x: evt.clientX
+    };
+
+    PIN_MAIN.SELECTOR.style.top = PIN_MAIN.SELECTOR.offsetTop - offset.y + 'px';
+    PIN_MAIN.SELECTOR.style.left = PIN_MAIN.SELECTOR.offsetLeft - offset.x + 'px';
+
+    if (PIN_MAIN.SELECTOR.offsetLeft < minX) {
+      PIN_MAIN.SELECTOR.style.left = minX + 'px';
+    } else if (PIN_MAIN.SELECTOR.offsetLeft > maxX) {
+      PIN_MAIN.SELECTOR.style.left = maxX + 'px';
+    }
+
+    if (PIN_MAIN.SELECTOR.offsetTop < minY) {
+      PIN_MAIN.SELECTOR.style.top = minY + 'px';
+    } else if (PIN_MAIN.SELECTOR.offsetTop > maxY) {
+      PIN_MAIN.SELECTOR.style.top = maxY + 'px';
+    }
+
+    setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
+  }
+
+  function mainPinMouseUpHandler() {
+    document.removeEventListener('mousemove', mainPinMouseMoveHandler);
+    document.removeEventListener('mouseup', mainPinMouseUpHandler);
   }
 
   function setMainPinAddress(left, top) {
@@ -126,9 +132,7 @@
   function pinClickHandler(evt) {
     if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
       window.cards.removeCard();
-      window.cards.insertCard(
-        window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]
-      );
+      window.cards.insertCard(window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]);
     }
   }
 
@@ -136,9 +140,7 @@
     if (evt.key === ENTER_KEY) {
       if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
         window.cards.removeCard();
-        window.cards.insertCard(
-          window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]
-        );
+        window.cards.insertCard(window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]);
       }
     }
   }
