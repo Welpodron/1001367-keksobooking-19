@@ -51,6 +51,7 @@
     window.form.disableForm();
     window.map.disableMap();
     window.filter.disableFilterForm();
+    window.pins.resetMainPinAddress();
     setTimeout(function () {
       validatePrice(types);
       validateRooms(rooms);

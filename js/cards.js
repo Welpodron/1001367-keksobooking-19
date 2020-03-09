@@ -4,7 +4,9 @@
   var CARD_TEMPLATE = document.querySelector('#card').content.querySelector('.map__card');
   var FEATURE_TEMPLATE = CARD_TEMPLATE.querySelector('.popup__feature');
   var PHOTO_TEMPLATE = CARD_TEMPLATE.querySelector('.popup__photo');
-  var CARDS_TARGET = document.querySelector('.map');
+
+  var ENTER_KEY = 'Enter';
+  var ESC_KEY = 'Escape';
 
   function generateArray(arr, target, type, template) {
     target.innerHTML = '';
@@ -36,19 +38,47 @@
     generateArray(advertisement.offer.features, card.querySelector('.popup__features'), 'feature', FEATURE_TEMPLATE);
     card.querySelector('.popup__description').textContent = advertisement.offer.description;
     generateArray(advertisement.offer.photos, card.querySelector('.popup__photos'), 'photo', PHOTO_TEMPLATE);
+    card.querySelector('.popup__close').addEventListener('click', cardButtonClickHandler);
+    card.querySelector('.popup__close').addEventListener('keydown', cardButtonEnterHandler);
+    document.addEventListener('keydown', cardButtonEscHandler);
     return card;
   }
 
-  function insertCard(arr, target) {
+  function insertCard(advertisement) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < 1; i++) {
-      fragment.appendChild(generateCard(arr[i]));
+    fragment.appendChild(generateCard(advertisement));
+    window.map.map.insertBefore(fragment, document.querySelector('.map__filters-container'));
+  }
+
+  function cardButtonClickHandler() {
+    removeCard();
+  }
+
+  function cardButtonEnterHandler(evt) {
+    if (evt.key === ENTER_KEY) {
+      removeCard();
     }
-    target.insertBefore(fragment, document.querySelector('.map__filters-container'));
+  }
+
+  function cardButtonEscHandler(evt) {
+    if (evt.key === ESC_KEY) {
+      removeCard();
+    }
+  }
+
+  function removeCard() {
+    var card = window.map.map.querySelector('.map__card');
+
+    if (card) {
+      card.remove();
+      card.querySelector('.popup__close').removeEventListener('click', cardButtonClickHandler);
+      card.querySelector('.popup__close').removeEventListener('keydown', cardButtonEnterHandler);
+      document.removeEventListener('keydown', cardButtonEscHandler);
+    }
   }
 
   window.cards = {
     insertCard: insertCard,
-    cardsTarget: CARDS_TARGET
+    removeCard: removeCard
   };
 })();

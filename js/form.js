@@ -13,17 +13,14 @@
     TIME_IN: FORM.querySelector('#timein'),
     TIME_OUT: FORM.querySelector('#timeout'),
     RESET: FORM.querySelector('.ad-form__reset'),
+    USER_PIC: FORM.querySelector('#avatar'),
+    HOUSE_PIC: FORM.querySelector('#images'),
     FIELDS: Array.from(FORM.children)
   };
 
   function activateForm() {
     FORM.classList.remove('ad-form--disabled');
     window.util.enableElements(FORM_ELEMENTS.FIELDS);
-    FORM_ELEMENTS.ADDRESS_INPUT.value = (
-      parseInt(window.pins.pinMain.SELECTOR.style.left, 10) + Math.floor(window.pins.pinMain.WIDTH / 2) +
-      ', ' +
-      (parseInt(window.pins.pinMain.SELECTOR.style.top, 10) + window.pins.pinMain.FULL_HEIGHT)
-    );
   }
 
   function disableForm() {

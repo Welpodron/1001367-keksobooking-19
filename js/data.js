@@ -15,9 +15,10 @@
   var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   var CHECKINS = ['12:00', '13:00', '14:00'];
   var CHECKOUTS = ['12:00', '13:00', '14:00'];
+  var ADVERTISEMENTS_ARRAY = getAdvertisementsArray();
 
   function getAdvertisement(userId) {
-    var locationX = window.util.getRandomIntInclusive(COORDINATES.X_MIN, COORDINATES.Y_MAX);
+    var locationX = window.util.getRandomIntInclusive(COORDINATES.X_MIN, COORDINATES.X_MAX);
     var locationY = window.util.getRandomIntInclusive(COORDINATES.Y_MIN, COORDINATES.Y_MAX);
     var advertisement = {
       author: {
@@ -83,7 +84,7 @@
   }
 
   window.data = {
-    getAdvertisementsArray: getAdvertisementsArray,
+    advertisementsArray: ADVERTISEMENTS_ARRAY,
     getBuildingType: getBuildingType,
     getBuildingMinPrice: getBuildingMinPrice,
     roomsDeclension: ROOMS_DECLENSION,
