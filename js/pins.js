@@ -131,24 +131,39 @@
 
   function pinClickHandler(evt) {
     if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
+      var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
       window.cards.removeCard();
-      window.cards.insertCard(window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]);
+      activatePin(activePin);
+      window.cards.insertCard(window.data.advertisementsArray[activePin.pinIndex]);
     }
   }
 
   function pinEnterHandler(evt) {
     if (evt.key === ENTER_KEY) {
       if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
+        var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
         window.cards.removeCard();
-        window.cards.insertCard(window.data.advertisementsArray[evt.target.closest('.map__pin:not(.map__pin--main)').pinIndex]);
+        activatePin(activePin);
+        window.cards.insertCard(window.data.advertisementsArray[activePin.pinIndex]);
       }
     }
+  }
+
+  function disablePin(pin) {
+    if (pin) {
+      pin.classList.remove('map__pin--active');
+    }
+  }
+
+  function activatePin(pin) {
+    pin.classList.add('map__pin--active');
   }
 
   window.pins = {
     pinsMap: PINS_MAP,
     pinMain: PIN_MAIN,
     insertPins: insertPins,
-    resetMainPinAddress: resetMainPinAddress
+    resetMainPinAddress: resetMainPinAddress,
+    disablePin: disablePin
   };
 })();

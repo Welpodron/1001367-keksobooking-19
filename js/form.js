@@ -13,6 +13,7 @@
     TIME_IN: FORM.querySelector('#timein'),
     TIME_OUT: FORM.querySelector('#timeout'),
     RESET: FORM.querySelector('.ad-form__reset'),
+    SUBMIT: FORM.querySelector('.ad-form__submit'),
     USER_PIC: FORM.querySelector('#avatar'),
     HOUSE_PIC: FORM.querySelector('#images'),
     FIELDS: Array.from(FORM.children)

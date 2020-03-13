@@ -4,7 +4,6 @@
   function preload() {
     var MIN_TITLE_LENGTH = '30';
     var MAX_TITLE_LENGTH = '100';
-    var MAX_PRICE = '1000000';
     var PIC_TYPES = 'image/*';
 
     var price = window.form.formElements.PRICE_INPUT;
@@ -17,7 +16,6 @@
     title.maxLength = MAX_TITLE_LENGTH;
     title.required = true;
 
-    price.max = MAX_PRICE;
     price.required = true;
 
     address.readOnly = true;

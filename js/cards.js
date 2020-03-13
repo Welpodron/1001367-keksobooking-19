@@ -26,6 +26,7 @@
 
   function generateCard(advertisement) {
     var card = CARD_TEMPLATE.cloneNode(true);
+    var cardCloseBtn = card.querySelector('.popup__close');
     card.querySelector('.popup__avatar').src = advertisement.author.avatar;
     card.querySelector('.popup__title').textContent = advertisement.offer.title;
     card.querySelector('.popup__text--address').textContent = advertisement.offer.address;
@@ -38,8 +39,8 @@
     generateArray(advertisement.offer.features, card.querySelector('.popup__features'), 'feature', FEATURE_TEMPLATE);
     card.querySelector('.popup__description').textContent = advertisement.offer.description;
     generateArray(advertisement.offer.photos, card.querySelector('.popup__photos'), 'photo', PHOTO_TEMPLATE);
-    card.querySelector('.popup__close').addEventListener('click', cardButtonClickHandler);
-    card.querySelector('.popup__close').addEventListener('keydown', cardButtonEnterHandler);
+    cardCloseBtn.addEventListener('click', cardButtonClickHandler);
+    cardCloseBtn.addEventListener('keydown', cardButtonEnterHandler);
     document.addEventListener('keydown', cardButtonEscHandler);
     return card;
   }
@@ -68,9 +69,12 @@
 
   function removeCard() {
     var card = window.map.map.querySelector('.map__card');
-
+    var pin = window.map.map.querySelector('.map__pin--active');
     if (card) {
       card.remove();
+      if (pin) {
+        window.pins.disablePin(pin);
+      }
       card.querySelector('.popup__close').removeEventListener('click', cardButtonClickHandler);
       card.querySelector('.popup__close').removeEventListener('keydown', cardButtonEnterHandler);
       document.removeEventListener('keydown', cardButtonEscHandler);
