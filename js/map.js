@@ -6,8 +6,12 @@
   function activateMap() {
     if (MAP.classList.contains('map--faded')) {
       MAP.classList.remove('map--faded');
-      window.pins.insertPins(window.data.advertisementsArray);
+      window.download.download(setPins);
     }
+  }
+
+  function setPins() {
+    window.pins.insertPins(window.data.getData());
   }
 
   function disableMap() {

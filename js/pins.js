@@ -134,7 +134,7 @@
       var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
       window.cards.removeCard();
       activatePin(activePin);
-      window.cards.insertCard(window.data.advertisementsArray[activePin.pinIndex]);
+      window.cards.insertCard(window.data.getData()[activePin.pinIndex]);
     }
   }
 
@@ -144,7 +144,7 @@
         var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
         window.cards.removeCard();
         activatePin(activePin);
-        window.cards.insertCard(window.data.advertisementsArray[activePin.pinIndex]);
+        window.cards.insertCard(window.data.getData()[activePin.pinIndex]);
       }
     }
   }
