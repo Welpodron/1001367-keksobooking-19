@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var COORDINATES = {
     X_MIN: 0,
     X_MAX: parseInt(getComputedStyle(document.body).maxWidth, 10),

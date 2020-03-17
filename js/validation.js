@@ -3,7 +3,6 @@
 (function () {
 
   var MAX_PRICE = 1000000;
-  var ENTER_KEY = 'Enter';
 
   var guests = window.form.formElements.GUESTS_SELECT;
   var types = window.form.formElements.TYPES_SELECT;
@@ -11,7 +10,6 @@
   var timeIn = window.form.formElements.TIME_IN;
   var timeOut = window.form.formElements.TIME_OUT;
   var rooms = window.form.formElements.ROOMS_SELECT;
-  var form = window.form.form;
   var submitButton = window.form.formElements.SUBMIT;
 
   var minPrice = 0;
@@ -77,31 +75,19 @@
     timeIn.value = evt.target.value;
   }
 
-  function formResetHandler() {
-    window.form.disableForm();
-    window.map.disableMap();
-    window.filter.disableFilterForm();
-    window.pins.resetMainPinAddress();
-    setTimeout(function () {
-      changePrice(types);
-      disableValidation();
-    }, 0);
-  }
-
   function submitButtonClickHandler() {
     priceValidationHandler();
     validateRooms();
   }
 
   function submitButtonEnterHandler(evt) {
-    if (evt.key === ENTER_KEY) {
+    if (window.util.isEnterPressed(evt)) {
       priceValidationHandler();
       validateRooms();
     }
   }
 
   function activateValidation() {
-    form.addEventListener('reset', formResetHandler);
     types.addEventListener('change', typesChangeHandler);
     timeIn.addEventListener('change', timeInChangeHandler);
     timeOut.addEventListener('change', timeOutChangeHandler);
@@ -113,7 +99,7 @@
   }
 
   function disableValidation() {
-    form.removeEventListener('reset', formResetHandler);
+    changePrice(types);
     types.removeEventListener('change', typesChangeHandler);
     timeIn.removeEventListener('change', timeInChangeHandler);
     timeOut.removeEventListener('change', timeOutChangeHandler);
@@ -128,5 +114,6 @@
 
   window.validation = {
     activateValidation: activateValidation,
+    disableValidation: disableValidation
   };
 })();

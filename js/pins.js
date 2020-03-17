@@ -6,6 +6,7 @@
     WIDTH: 50,
     HEIGHT: 70
   };
+
   var PIN_MAIN = {
     SELECTOR: document.querySelector('.map__pin--main'),
     WIDTH: 65,
@@ -16,9 +17,6 @@
   };
 
   var PINS_MAP = document.querySelector('.map__pins');
-
-  var ENTER_KEY = 'Enter';
-  var LEFT_MOUSE_BUTTON = 0;
 
   PIN_MAIN.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
   PIN_MAIN.SELECTOR.addEventListener('keydown', mainPinEnterHandler);
@@ -47,7 +45,7 @@
   }
 
   function mainPinClickHandler(evt) {
-    if (evt.button === LEFT_MOUSE_BUTTON) {
+    if (window.util.isLeftMouseButtonPressed(evt)) {
       window.map.activateMap();
       window.form.activateForm();
       window.filter.activateFilterForm();
@@ -119,7 +117,7 @@
   }
 
   function mainPinEnterHandler(evt) {
-    if (evt.key === ENTER_KEY) {
+    if (window.util.isEnterPressed(evt)) {
       window.map.activateMap();
       window.form.activateForm();
       window.filter.activateFilterForm();
@@ -139,7 +137,7 @@
   }
 
   function pinEnterHandler(evt) {
-    if (evt.key === ENTER_KEY) {
+    if (window.util.isEnterPressed(evt)) {
       if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
         var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
         window.cards.removeCard();

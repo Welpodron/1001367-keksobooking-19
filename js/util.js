@@ -1,6 +1,27 @@
 'use strict';
 
 (function () {
+
+  var ENTER_KEYCODE = 13;
+  var ESC_KEYCODE = 27;
+  var LEFT_MOUSE_BUTTON = 0;
+
+  function isCallBackFunction(func) {
+    return typeof (func) === 'function';
+  }
+
+  function isLeftMouseButtonPressed(evt) {
+    return evt.button === LEFT_MOUSE_BUTTON;
+  }
+
+  function isEnterPressed(evt) {
+    return evt.keyCode === ENTER_KEYCODE;
+  }
+
+  function isEscPressed(evt) {
+    return evt.keyCode === ESC_KEYCODE;
+  }
+
   function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -37,6 +58,10 @@
   }
 
   window.util = {
+    isCallBackFunction: isCallBackFunction,
+    isLeftMouseButtonPressed: isLeftMouseButtonPressed,
+    isEnterPressed: isEnterPressed,
+    isEscPressed: isEscPressed,
     getRandomIntInclusive: getRandomIntInclusive,
     getRandomArrayElement: getRandomArrayElement,
     getRandomLengthArray: getRandomLengthArray,

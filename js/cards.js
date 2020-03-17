@@ -5,9 +5,6 @@
   var FEATURE_TEMPLATE = CARD_TEMPLATE.querySelector('.popup__feature');
   var PHOTO_TEMPLATE = CARD_TEMPLATE.querySelector('.popup__photo');
 
-  var ENTER_KEY = 'Enter';
-  var ESC_KEY = 'Escape';
-
   function generateArray(arr, target, type, template) {
     target.innerHTML = '';
     arr.forEach(function (arrItem) {
@@ -56,13 +53,13 @@
   }
 
   function cardButtonEnterHandler(evt) {
-    if (evt.key === ENTER_KEY) {
+    if (window.util.isEnterPressed(evt)) {
       removeCard();
     }
   }
 
   function cardButtonEscHandler(evt) {
-    if (evt.key === ESC_KEY) {
+    if (window.util.isEscPressed(evt)) {
       removeCard();
     }
   }
