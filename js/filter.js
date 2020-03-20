@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var FILTER_FIELDS = Array.from(document.querySelector('.map__filters').children);
 
   var FILTER = document.querySelector('.map__filters');
 
@@ -23,7 +22,7 @@
     FILTER.addEventListener('change', window.debounce.debounce(function () {
       updatePins();
     }));
-    window.util.enableElements(FILTER_FIELDS);
+    window.util.enableElements(FILTER_ELEMENTS.FIELDS);
   }
 
   function disableFilterForm() {
@@ -69,10 +68,10 @@
   }
 
   window.filter = {
+    filterFields: FILTER_ELEMENTS.FIELDS,
     isFilterActive: isFilterActive,
     getfilteredOffers: getfilteredOffers,
     activateFilterForm: activateFilterForm,
-    filterFields: FILTER_FIELDS,
     disableFilterForm: disableFilterForm
   };
 })();
