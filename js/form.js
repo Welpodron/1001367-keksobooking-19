@@ -42,17 +42,18 @@
 
   function resetFormHandler() {
     disableForm();
+    window.validation.disableValidation();
+    window.util.togglePage();
     window.map.disableMap();
-    window.filter.disableFilterForm();
     window.pins.resetMainPinAddress();
-    setTimeout(function () {
-      window.validation.disableValidation();
-    }, 0);
+
+    if (window.filter.isFilterActive()) {
+      window.filter.disableFilterForm();
+    }
   }
 
   function successSubmitHandler() {
     FORM.reset();
-    resetFormHandler();
     var node = SUCCESS_SUBMIT_TEMPLATE.cloneNode(true);
     document.addEventListener('keydown', successPopUpEscHandler);
     document.addEventListener('click', successPopUpClickHandler);

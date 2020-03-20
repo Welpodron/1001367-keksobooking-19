@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var PIN = {
     TEMPLATE: document.querySelector('#pin').content.querySelector('button'),
     WIDTH: 50,
@@ -44,16 +45,22 @@
     PINS_MAP.appendChild(fragment);
   }
 
-  function mainPinClickHandler(evt) {
-    if (window.util.isLeftMouseButtonPressed(evt)) {
+  function activatePage() {
+    if (!window.util.isPageActive()) {
+      window.util.togglePage();
+      window.data.downloadData();
       window.map.activateMap();
       window.form.activateForm();
-      window.filter.activateFilterForm();
       window.validation.activateValidation();
-      setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
       PINS_MAP.addEventListener('click', pinClickHandler);
       PINS_MAP.addEventListener('keydown', pinEnterHandler);
+    }
+  }
 
+  function mainPinClickHandler(evt) {
+    if (window.util.isLeftMouseButtonPressed(evt)) {
+      activatePage();
+      setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
       startingCoords = {
         y: evt.clientY,
         x: evt.clientX
@@ -118,12 +125,8 @@
 
   function mainPinEnterHandler(evt) {
     if (window.util.isEnterPressed(evt)) {
-      window.map.activateMap();
-      window.form.activateForm();
-      window.filter.activateFilterForm();
-      window.validation.activateValidation();
-      PINS_MAP.addEventListener('click', pinClickHandler);
-      PINS_MAP.addEventListener('keydown', pinEnterHandler);
+      activatePage();
+      setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
     }
   }
 
@@ -132,7 +135,7 @@
       var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
       window.cards.removeCard();
       activatePin(activePin);
-      window.cards.insertCard(window.data.getData()[activePin.pinIndex]);
+      window.cards.insertCard(window.filter.getfilteredOffers()[activePin.pinIndex]);
     }
   }
 
@@ -142,7 +145,7 @@
         var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
         window.cards.removeCard();
         activatePin(activePin);
-        window.cards.insertCard(window.data.getData()[activePin.pinIndex]);
+        window.cards.insertCard(window.filter.getfilteredOffers()[activePin.pinIndex]);
       }
     }
   }
@@ -157,9 +160,30 @@
     pin.classList.add('map__pin--active');
   }
 
+  function removePins() {
+    var pins = PINS_MAP.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pins.forEach(function (pin) {
+      pin.remove();
+    });
+  }
+
+  function renderPins(data) {
+    var max = data.length > 5 ? 5 : data.length;
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < max; i++) {
+      fragment.appendChild(generatePin(data[i], i));
+    }
+
+    removePins();
+    PINS_MAP.appendChild(fragment);
+  }
+
   window.pins = {
     pinsMap: PINS_MAP,
     pinMain: PIN_MAIN,
+    removePins: removePins,
+    renderPins: renderPins,
     insertPins: insertPins,
     resetMainPinAddress: resetMainPinAddress,
     disablePin: disablePin

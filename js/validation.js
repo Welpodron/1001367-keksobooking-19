@@ -3,6 +3,7 @@
 (function () {
 
   var MAX_PRICE = 1000000;
+  var DEFAULT_PRICE_PLACEHOLDER = '1 000';
 
   var guests = window.form.formElements.GUESTS_SELECT;
   var types = window.form.formElements.TYPES_SELECT;
@@ -17,6 +18,10 @@
   function changePrice(target) {
     price.placeholder = window.data.getBuildingMinPrice(target.value).toLocaleString('ru');
     minPrice = window.data.getBuildingMinPrice(target.value);
+  }
+
+  function resetPrice() {
+    price.placeholder = DEFAULT_PRICE_PLACEHOLDER;
   }
 
   function priceValidationHandler() {
@@ -99,7 +104,7 @@
   }
 
   function disableValidation() {
-    changePrice(types);
+    resetPrice();
     types.removeEventListener('change', typesChangeHandler);
     timeIn.removeEventListener('change', timeInChangeHandler);
     timeOut.removeEventListener('change', timeOutChangeHandler);

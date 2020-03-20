@@ -21,30 +21,30 @@
     });
   }
 
-  function generateCard(advertisement) {
+  function generateCard(offer) {
     var card = CARD_TEMPLATE.cloneNode(true);
     var cardCloseBtn = card.querySelector('.popup__close');
-    card.querySelector('.popup__avatar').src = advertisement.author.avatar;
-    card.querySelector('.popup__title').textContent = advertisement.offer.title;
-    card.querySelector('.popup__text--address').textContent = advertisement.offer.address;
-    card.querySelector('.popup__text--price').textContent = advertisement.offer.price + '₽/ночь';
-    card.querySelector('.popup__type').textContent = window.data.getBuildingType(advertisement);
+    card.querySelector('.popup__avatar').src = offer.author.avatar;
+    card.querySelector('.popup__title').textContent = offer.offer.title;
+    card.querySelector('.popup__text--address').textContent = offer.offer.address;
+    card.querySelector('.popup__text--price').textContent = offer.offer.price + '₽/ночь';
+    card.querySelector('.popup__type').textContent = window.data.getBuildingType(offer);
     card.querySelector('.popup__text--capacity').textContent = (
-      window.util.getDeclension(advertisement.offer.rooms, window.data.roomsDeclension) + ' для ' + window.util.getDeclension(advertisement.offer.guests, window.data.guestsDeclension)
+      window.util.getDeclension(offer.offer.rooms, window.data.roomsDeclension) + ' для ' + window.util.getDeclension(offer.offer.guests, window.data.guestsDeclension)
     );
-    card.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertisement.offer.checkin + ', выезд до ' + advertisement.offer.checkout;
-    generateArray(advertisement.offer.features, card.querySelector('.popup__features'), 'feature', FEATURE_TEMPLATE);
-    card.querySelector('.popup__description').textContent = advertisement.offer.description;
-    generateArray(advertisement.offer.photos, card.querySelector('.popup__photos'), 'photo', PHOTO_TEMPLATE);
+    card.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout;
+    generateArray(offer.offer.features, card.querySelector('.popup__features'), 'feature', FEATURE_TEMPLATE);
+    card.querySelector('.popup__description').textContent = offer.offer.description;
+    generateArray(offer.offer.photos, card.querySelector('.popup__photos'), 'photo', PHOTO_TEMPLATE);
     cardCloseBtn.addEventListener('click', cardButtonClickHandler);
     cardCloseBtn.addEventListener('keydown', cardButtonEnterHandler);
     document.addEventListener('keydown', cardButtonEscHandler);
     return card;
   }
 
-  function insertCard(advertisement) {
+  function insertCard(offer) {
     var fragment = document.createDocumentFragment();
-    fragment.appendChild(generateCard(advertisement));
+    fragment.appendChild(generateCard(offer));
     window.map.map.insertBefore(fragment, document.querySelector('.map__filters-container'));
   }
 

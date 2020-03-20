@@ -6,6 +6,8 @@
   var ESC_KEYCODE = 27;
   var LEFT_MOUSE_BUTTON = 0;
 
+  var pageStatus = false;
+
   function isCallBackFunction(func) {
     return typeof (func) === 'function';
   }
@@ -57,7 +59,16 @@
     });
   }
 
+  function togglePage() {
+    pageStatus = !pageStatus;
+  }
+
+  function isPageActive() {
+    return pageStatus;
+  }
+
   window.util = {
+    isPageActive: isPageActive,
     isCallBackFunction: isCallBackFunction,
     isLeftMouseButtonPressed: isLeftMouseButtonPressed,
     isEnterPressed: isEnterPressed,
@@ -66,6 +77,7 @@
     getRandomArrayElement: getRandomArrayElement,
     getRandomLengthArray: getRandomLengthArray,
     getDeclension: getDeclension,
+    togglePage: togglePage,
     disableElements: disableElements,
     enableElements: enableElements
   };

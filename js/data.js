@@ -12,22 +12,34 @@
   var ROOMS_DECLENSION = ['комната', 'комнаты', 'комнат'];
   var GUESTS_DECLENSION = ['гостя', 'гостей', 'гостей'];
 
-  var advertisementsArray = [];
+  var offers = [];
 
-  function checkData(data) {
-    data.forEach(function (element) {
-      if (!(typeof element.offer === 'undefined' || element.offer === '')) {
-        advertisementsArray.push(element);
-      }
-    });
+  function downloadData() {
+    window.xml.download(successHandler, errorHandler, window.filter.activateFilterForm);
   }
 
-  function setData(data) {
-    checkData(data);
+  function successHandler(data, callback) {
+    data.forEach(function (element) {
+      if (!(typeof element.offer === 'undefined' || element.offer === '')) {
+        offers.push(element);
+      }
+    });
+    callback();
+  }
+
+  function errorHandler(errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   }
 
   function getData() {
-    return advertisementsArray;
+    return offers;
   }
 
   function getBuildingType(advertisement) {
@@ -61,7 +73,7 @@
   }
 
   window.data = {
-    setData: setData,
+    downloadData: downloadData,
     getData: getData,
     getBuildingType: getBuildingType,
     getBuildingMinPrice: getBuildingMinPrice,
