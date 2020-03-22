@@ -4,6 +4,7 @@
 
   var MAX_PRICE = 1000000;
   var DEFAULT_PRICE_PLACEHOLDER = '1 000';
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   var guests = window.form.formElements.GUESTS_SELECT;
   var types = window.form.formElements.TYPES_SELECT;
@@ -12,6 +13,8 @@
   var timeOut = window.form.formElements.TIME_OUT;
   var rooms = window.form.formElements.ROOMS_SELECT;
   var submitButton = window.form.formElements.SUBMIT;
+  var userPicInput = window.form.formElements.USER_PIC;
+  var housePicInput = window.form.formElements.HOUSE_PIC;
 
   var minPrice = 0;
 
@@ -39,7 +42,6 @@
     }
   }
 
-  // Исправить склонения, при необходимости переработать функцию
   function validateRooms() {
     if (!(rooms.value >= guests.value && rooms.value < 100 && guests.value > 0)) {
       if (rooms.value >= 100 && guests.value <= 0) {
@@ -53,7 +55,7 @@
             cacheString += guests.options[i].text + ' ';
           }
         }
-        guests.setCustomValidity('Для ' + rooms.options[rooms.options.selectedIndex].text + ' доступны следующие варианты: ' + cacheString);
+        guests.setCustomValidity('Для варианта: ' + rooms.options[rooms.options.selectedIndex].text + ' доступны следующие варианты: ' + cacheString);
       }
     } else {
       guests.setCustomValidity('');
@@ -92,7 +94,38 @@
     }
   }
 
+  function validateImage(target) {
+    var file = target.files[0];
+    var fileName = file.name.toLowerCase();
+
+    var matches = FILE_TYPES.some(function (it) {
+      return fileName.endsWith(it);
+    });
+
+    if (matches) {
+      var reader = new FileReader();
+
+      if (target.name === userPicInput.name) {
+        reader.addEventListener('load', window.form.uploadUserPicHandler);
+      } else if (target.name === housePicInput.name) {
+        reader.addEventListener('load', window.form.uploadHousePicHandler);
+      }
+
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function userPicInputHandler(evt) {
+    validateImage(evt.target);
+  }
+
+  function housePicInputHandler(evt) {
+    validateImage(evt.target);
+  }
+
   function activateValidation() {
+    userPicInput.addEventListener('change', userPicInputHandler);
+    housePicInput.addEventListener('change', housePicInputHandler);
     types.addEventListener('change', typesChangeHandler);
     timeIn.addEventListener('change', timeInChangeHandler);
     timeOut.addEventListener('change', timeOutChangeHandler);
@@ -105,6 +138,8 @@
 
   function disableValidation() {
     resetPrice();
+    userPicInput.removeEventListener('change', userPicInputHandler);
+    housePicInput.removeEventListener('change', housePicInputHandler);
     types.removeEventListener('change', typesChangeHandler);
     timeIn.removeEventListener('change', timeInChangeHandler);
     timeOut.removeEventListener('change', timeOutChangeHandler);

@@ -15,9 +15,13 @@
     RESET: FORM.querySelector('.ad-form__reset'),
     SUBMIT: FORM.querySelector('.ad-form__submit'),
     USER_PIC: FORM.querySelector('#avatar'),
+    USER_PIC_PREVIEW: FORM.querySelector('.ad-form-header__preview img'),
     HOUSE_PIC: FORM.querySelector('#images'),
+    HOUSE_PIC_PREVIEW: FORM.querySelector('.ad-form__photo'),
     FIELDS: Array.from(FORM.children)
   };
+
+  var DEFAULT_USER_PIC_SRC = 'img/muffin-grey.svg';
 
   var NODE_TEMPLATE_TARGET = document.querySelector('main');
   var SUCCESS_SUBMIT_TEMPLATE = document.querySelector('#success').content.querySelector('.success');
@@ -42,6 +46,8 @@
 
   function resetFormHandler() {
     disableForm();
+    resetUserPic();
+    resetHousePic();
     window.validation.disableValidation();
     window.util.togglePage();
     window.map.disableMap();
@@ -49,7 +55,11 @@
 
     if (window.filter.isFilterActive()) {
       window.filter.disableFilterForm();
+      window.pins.disableListening();
     }
+
+    FORM.removeEventListener('submit', submitFormHandler);
+    FORM.removeEventListener('reset', resetFormHandler);
   }
 
   function successSubmitHandler() {
@@ -68,6 +78,28 @@
     document.addEventListener('keydown', errorPopUpEscHandler);
     document.addEventListener('click', errorPopUpClickHandler);
     NODE_TEMPLATE_TARGET.insertAdjacentElement('afterbegin', node);
+  }
+
+  function uploadUserPicHandler(evt) {
+    FORM_ELEMENTS.USER_PIC_PREVIEW.src = evt.target.result;
+  }
+
+  function uploadHousePicHandler(evt) {
+    resetHousePic();
+    var node = document.createElement('img');
+    node.src = evt.target.result;
+    node.alt = 'Фотография жилья';
+    node.width = (parseInt(getComputedStyle(FORM_ELEMENTS.HOUSE_PIC_PREVIEW).width, 10)).toString();
+    node.height = (parseInt(getComputedStyle(FORM_ELEMENTS.HOUSE_PIC_PREVIEW).height, 10)).toString();
+    FORM_ELEMENTS.HOUSE_PIC_PREVIEW.insertAdjacentElement('afterbegin', node);
+  }
+
+  function resetHousePic() {
+    FORM_ELEMENTS.HOUSE_PIC_PREVIEW.innerHTML = '';
+  }
+
+  function resetUserPic() {
+    FORM_ELEMENTS.USER_PIC_PREVIEW.src = DEFAULT_USER_PIC_SRC;
   }
 
   function successPopUpEscHandler(evt) {
@@ -125,6 +157,8 @@
 
   window.form = {
     form: FORM,
+    uploadHousePicHandler: uploadHousePicHandler,
+    uploadUserPicHandler: uploadUserPicHandler,
     formElements: FORM_ELEMENTS,
     activateForm: activateForm,
     disableForm: disableForm

@@ -17,6 +17,8 @@
     DEFAULT_Y: '375px'
   };
 
+  var MAX_PINS = 5;
+
   var PINS_MAP = document.querySelector('.map__pins');
 
   PIN_MAIN.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
@@ -52,9 +54,17 @@
       window.map.activateMap();
       window.form.activateForm();
       window.validation.activateValidation();
-      PINS_MAP.addEventListener('click', pinClickHandler);
-      PINS_MAP.addEventListener('keydown', pinEnterHandler);
     }
+  }
+
+  function enableListening() {
+    PINS_MAP.addEventListener('click', pinClickHandler);
+    PINS_MAP.addEventListener('keydown', pinEnterHandler);
+  }
+
+  function disableListening() {
+    PINS_MAP.removeEventListener('click', pinClickHandler);
+    PINS_MAP.removeEventListener('keydown', pinEnterHandler);
   }
 
   function mainPinClickHandler(evt) {
@@ -168,7 +178,7 @@
   }
 
   function renderPins(data) {
-    var max = data.length > 5 ? 5 : data.length;
+    var max = data.length > MAX_PINS ? MAX_PINS : data.length;
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < max; i++) {
@@ -180,6 +190,8 @@
   }
 
   window.pins = {
+    enableListening: enableListening,
+    disableListening: disableListening,
     pinsMap: PINS_MAP,
     pinMain: PIN_MAIN,
     removePins: removePins,

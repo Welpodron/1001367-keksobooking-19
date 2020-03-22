@@ -12,12 +12,13 @@
     PRICE_SELECT: FILTER.querySelector('#housing-price'),
     ROOMS_SELECT: FILTER.querySelector('#housing-rooms'),
     GUESTS_SELECT: FILTER.querySelector('#housing-guests'),
-    FEATURES_SELECT: FILTER.querySelectorAll('#housing-features'),
+    FEATURES_SELECT: FILTER.querySelectorAll('#housing-features input'),
     FIELDS: Array.from(FILTER.children)
   };
 
   function activateFilterForm() {
     filterStatus = true;
+    window.pins.enableListening();
     updatePins();
     FILTER.addEventListener('change', window.debounce.debounce(function () {
       updatePins();
@@ -28,7 +29,7 @@
   function disableFilterForm() {
     FILTER.removeEventListener('change', updatePins);
     FILTER.reset();
-    window.util.disableElements(FILTER_FIELDS);
+    window.util.disableElements(FILTER_ELEMENTS.FIELDS);
   }
 
   function updatePins() {
@@ -46,9 +47,36 @@
       return (
         filterType(offer) &&
         filterRooms(offer) &&
-        filterGuests(offer)
+        filterGuests(offer) &&
+        filterPrice(offer) &&
+        filterFeatures(offer)
       );
     });
+  }
+
+  function filterPrice(offer) {
+    switch (FILTER_ELEMENTS.PRICE_SELECT.value) {
+      case 'any':
+        return true;
+      case 'middle':
+        return offer.offer.price >= 10000 && offer.offer.price <= 50000;
+      case 'low':
+        return offer.offer.price < 10000;
+      case 'high':
+        return offer.offer.price > 50000;
+    }
+
+    return true;
+  }
+
+  function filterFeatures(offer) {
+    return (
+      Array.from(FILTER_ELEMENTS.FEATURES_SELECT).filter(function (feature) {
+        return feature.checked;
+      }).every(function (checkedFeature) {
+        return offer.offer.features.includes(checkedFeature.value);
+      })
+    );
   }
 
   function filterType(offer) {
