@@ -2,34 +2,34 @@
 
 (function () {
 
-  var FILTER = document.querySelector('.map__filters');
+  var filter = document.querySelector('.map__filters');
 
   var filteredOffers = [];
   var filterStatus = false;
 
-  var FilterElements = {
-    TYPES_SELECT: FILTER.querySelector('#housing-type'),
-    PRICE_SELECT: FILTER.querySelector('#housing-price'),
-    ROOMS_SELECT: FILTER.querySelector('#housing-rooms'),
-    GUESTS_SELECT: FILTER.querySelector('#housing-guests'),
-    FEATURES_SELECT: FILTER.querySelectorAll('#housing-features input'),
-    FIELDS: Array.from(FILTER.children)
+  var filterElements = {
+    typesSelect: filter.querySelector('#housing-type'),
+    priceSelect: filter.querySelector('#housing-price'),
+    roomsSelect: filter.querySelector('#housing-rooms'),
+    guestsSelect: filter.querySelector('#housing-guests'),
+    featuresSelect: filter.querySelectorAll('#housing-features input'),
+    fields: Array.from(filter.children)
   };
 
   function activateFilterForm() {
     filterStatus = true;
     window.pins.enableListening();
     updatePins();
-    FILTER.addEventListener('change', window.debounce.delay(function () {
+    filter.addEventListener('change', window.debounce.delay(function () {
       updatePins();
     }));
-    window.util.enableElements(FilterElements.FIELDS);
+    window.util.enableElements(filterElements.fields);
   }
 
   function disableFilterForm() {
-    FILTER.removeEventListener('change', updatePins);
-    FILTER.reset();
-    window.util.disableElements(FilterElements.FIELDS);
+    filter.removeEventListener('change', updatePins);
+    filter.reset();
+    window.util.disableElements(filterElements.fields);
   }
 
   function updatePins() {
@@ -55,7 +55,7 @@
   }
 
   function filterPrice(offer) {
-    switch (FilterElements.PRICE_SELECT.value) {
+    switch (filterElements.priceSelect.value) {
       case 'any':
         return true;
       case 'middle':
@@ -71,7 +71,7 @@
 
   function filterFeatures(offer) {
     return (
-      Array.from(FilterElements.FEATURES_SELECT).filter(function (feature) {
+      Array.from(filterElements.featuresSelect).filter(function (feature) {
         return feature.checked;
       }).every(function (checkedFeature) {
         return offer.offer.features.includes(checkedFeature.value);
@@ -80,15 +80,15 @@
   }
 
   function filterType(offer) {
-    return FilterElements.TYPES_SELECT.value !== 'any' ? offer.offer.type === FilterElements.TYPES_SELECT.value : true;
+    return filterElements.typesSelect.value !== 'any' ? offer.offer.type === filterElements.typesSelect.value : true;
   }
 
   function filterRooms(offer) {
-    return FilterElements.ROOMS_SELECT.value !== 'any' ? offer.offer.rooms === parseInt(FilterElements.ROOMS_SELECT.value, 10) : true;
+    return filterElements.roomsSelect.value !== 'any' ? offer.offer.rooms === parseInt(filterElements.roomsSelect.value, 10) : true;
   }
 
   function filterGuests(offer) {
-    return FilterElements.GUESTS_SELECT.value !== 'any' ? offer.offer.guests === parseInt(FilterElements.GUESTS_SELECT.value, 10) : true;
+    return filterElements.guestsSelect.value !== 'any' ? offer.offer.guests === parseInt(filterElements.guestsSelect.value, 10) : true;
   }
 
   function isFilterActive() {
@@ -96,7 +96,7 @@
   }
 
   window.filter = {
-    apply: FilterElements.FIELDS,
+    apply: filterElements.fields,
     isActive: isFilterActive,
     getFilteredOffers: getFilteredOffers,
     activate: activateFilterForm,

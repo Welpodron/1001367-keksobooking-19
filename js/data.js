@@ -2,11 +2,11 @@
 
 (function () {
 
-  var Coordinates = {
-    X_MIN: 0,
-    X_MAX: parseInt(getComputedStyle(document.body).maxWidth, 10),
-    Y_MIN: 130,
-    Y_MAX: 630
+  var coordinates = {
+    xMin: 0,
+    xMax: parseInt(getComputedStyle(document.body).maxWidth, 10),
+    yMin: 130,
+    yMax: 630
   };
 
   var ROOMS_DECLENSION = ['комната', 'комнаты', 'комнат'];
@@ -79,6 +79,6 @@
     getBuildingMinPrice: getBuildingMinPrice,
     roomsDeclension: ROOMS_DECLENSION,
     guestsDeclension: GUESTS_DECLENSION,
-    coordinates: Coordinates
+    coordinates: coordinates
   };
 })();
