@@ -2,13 +2,13 @@
 
 (function () {
 
-  var PIN = {
+  var Pin = {
     TEMPLATE: document.querySelector('#pin').content.querySelector('button'),
     WIDTH: 50,
     HEIGHT: 70
   };
 
-  var PIN_MAIN = {
+  var PinMain = {
     SELECTOR: document.querySelector('.map__pin--main'),
     WIDTH: 65,
     HEIGHT: 65,
@@ -21,39 +21,29 @@
 
   var PINS_MAP = document.querySelector('.map__pins');
 
-  PIN_MAIN.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
-  PIN_MAIN.SELECTOR.addEventListener('keydown', mainPinEnterHandler);
+  PinMain.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
+  PinMain.SELECTOR.addEventListener('keydown', mainPinEnterHandler);
 
-  var startingCoords = {
-    y: 0,
-    x: 0
-  };
+  var startingXCoord = 0;
+  var startingYCoord = 0;
 
   function generatePin(advertisement, index) {
-    var pin = PIN.TEMPLATE.cloneNode(true);
+    var pin = Pin.TEMPLATE.cloneNode(true);
     pin.pinIndex = index;
-    pin.style.left = advertisement.location.x - PIN.WIDTH / 2 + 'px';
-    pin.style.top = advertisement.location.y - PIN.HEIGHT + 'px';
+    pin.style.left = advertisement.location.x - Pin.WIDTH / 2 + 'px';
+    pin.style.top = advertisement.location.y - Pin.HEIGHT + 'px';
     pin.querySelector('img').src = advertisement.author.avatar;
     pin.querySelector('img').alt = advertisement.offer.title;
     return pin;
   }
 
-  function insertPins(arr) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length; i++) {
-      fragment.appendChild(generatePin(arr[i], i));
-    }
-    PINS_MAP.appendChild(fragment);
-  }
-
   function activatePage() {
     if (!window.util.isPageActive()) {
       window.util.togglePage();
-      window.data.downloadData();
-      window.map.activateMap();
-      window.form.activateForm();
-      window.validation.activateValidation();
+      window.data.download();
+      window.map.activate();
+      window.form.activate();
+      window.validation.activate();
     }
   }
 
@@ -70,11 +60,10 @@
   function mainPinClickHandler(evt) {
     if (window.util.isLeftMouseButtonPressed(evt)) {
       activatePage();
-      setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
-      startingCoords = {
-        y: evt.clientY,
-        x: evt.clientX
-      };
+      setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
+
+      startingXCoord = evt.clientX;
+      startingYCoord = evt.clientY;
 
       document.addEventListener('mousemove', mainPinMouseMoveHandler);
       document.addEventListener('mouseup', mainPinMouseUpHandler);
@@ -82,37 +71,33 @@
   }
 
   function mainPinMouseMoveHandler(evt) {
-    var minX = window.data.coordinates.X_MIN - PIN_MAIN.WIDTH / 2;
-    var maxX = PINS_MAP.offsetWidth - Math.floor(PIN_MAIN.WIDTH / 2);
-    var minY = window.data.coordinates.Y_MIN - PIN_MAIN.FULL_HEIGHT;
-    var maxY = window.data.coordinates.Y_MAX - PIN_MAIN.FULL_HEIGHT;
+    var minX = window.data.coordinates.X_MIN - PinMain.WIDTH / 2;
+    var maxX = PINS_MAP.offsetWidth - Math.floor(PinMain.WIDTH / 2);
+    var minY = window.data.coordinates.Y_MIN - PinMain.FULL_HEIGHT;
+    var maxY = window.data.coordinates.Y_MAX - PinMain.FULL_HEIGHT;
 
-    var offset = {
-      y: startingCoords.y - evt.clientY,
-      x: startingCoords.x - evt.clientX
-    };
+    var offsetX = startingXCoord - evt.clientX;
+    var offsetY = startingYCoord - evt.clientY;
 
-    startingCoords = {
-      y: evt.clientY,
-      x: evt.clientX
-    };
+    startingXCoord = evt.clientX;
+    startingYCoord = evt.clientY;
 
-    PIN_MAIN.SELECTOR.style.top = PIN_MAIN.SELECTOR.offsetTop - offset.y + 'px';
-    PIN_MAIN.SELECTOR.style.left = PIN_MAIN.SELECTOR.offsetLeft - offset.x + 'px';
+    PinMain.SELECTOR.style.top = PinMain.SELECTOR.offsetTop - offsetY + 'px';
+    PinMain.SELECTOR.style.left = PinMain.SELECTOR.offsetLeft - offsetX + 'px';
 
-    if (PIN_MAIN.SELECTOR.offsetLeft < minX) {
-      PIN_MAIN.SELECTOR.style.left = minX + 'px';
-    } else if (PIN_MAIN.SELECTOR.offsetLeft > maxX) {
-      PIN_MAIN.SELECTOR.style.left = maxX + 'px';
+    if (PinMain.SELECTOR.offsetLeft < minX) {
+      PinMain.SELECTOR.style.left = minX + 'px';
+    } else if (PinMain.SELECTOR.offsetLeft > maxX) {
+      PinMain.SELECTOR.style.left = maxX + 'px';
     }
 
-    if (PIN_MAIN.SELECTOR.offsetTop < minY) {
-      PIN_MAIN.SELECTOR.style.top = minY + 'px';
-    } else if (PIN_MAIN.SELECTOR.offsetTop > maxY) {
-      PIN_MAIN.SELECTOR.style.top = maxY + 'px';
+    if (PinMain.SELECTOR.offsetTop < minY) {
+      PinMain.SELECTOR.style.top = minY + 'px';
+    } else if (PinMain.SELECTOR.offsetTop > maxY) {
+      PinMain.SELECTOR.style.top = maxY + 'px';
     }
 
-    setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
+    setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
   }
 
   function mainPinMouseUpHandler() {
@@ -121,31 +106,31 @@
   }
 
   function setMainPinAddress(left, top) {
-    window.form.formElements.ADDRESS_INPUT.value = (
-      parseInt(left, 10) + Math.floor(PIN_MAIN.WIDTH / 2) +
+    window.form.elements.ADDRESS_INPUT.value = (
+      parseInt(left, 10) + Math.floor(PinMain.WIDTH / 2) +
       ', ' +
-      (parseInt(top, 10) + PIN_MAIN.FULL_HEIGHT)
+      (parseInt(top, 10) + PinMain.FULL_HEIGHT)
     );
   }
 
   function resetMainPinAddress() {
-    PIN_MAIN.SELECTOR.style.top = PIN_MAIN.DEFAULT_Y;
-    PIN_MAIN.SELECTOR.style.left = PIN_MAIN.DEFAULT_X;
+    PinMain.SELECTOR.style.top = PinMain.DEFAULT_Y;
+    PinMain.SELECTOR.style.left = PinMain.DEFAULT_X;
   }
 
   function mainPinEnterHandler(evt) {
     if (window.util.isEnterPressed(evt)) {
       activatePage();
-      setMainPinAddress(PIN_MAIN.SELECTOR.style.left, PIN_MAIN.SELECTOR.style.top);
+      setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
     }
   }
 
   function pinClickHandler(evt) {
     if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
       var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
-      window.cards.removeCard();
+      window.cards.remove();
       activatePin(activePin);
-      window.cards.insertCard(window.filter.getfilteredOffers()[activePin.pinIndex]);
+      window.cards.insert(window.filter.getFilteredOffers()[activePin.pinIndex]);
     }
   }
 
@@ -153,9 +138,9 @@
     if (window.util.isEnterPressed(evt)) {
       if (evt.target.closest('.map__pin:not(.map__pin--main)')) {
         var activePin = evt.target.closest('.map__pin:not(.map__pin--main)');
-        window.cards.removeCard();
+        window.cards.remove();
         activatePin(activePin);
-        window.cards.insertCard(window.filter.getfilteredOffers()[activePin.pinIndex]);
+        window.cards.insert(window.filter.getFilteredOffers()[activePin.pinIndex]);
       }
     }
   }
@@ -192,12 +177,9 @@
   window.pins = {
     enableListening: enableListening,
     disableListening: disableListening,
-    pinsMap: PINS_MAP,
-    pinMain: PIN_MAIN,
-    removePins: removePins,
-    renderPins: renderPins,
-    insertPins: insertPins,
-    resetMainPinAddress: resetMainPinAddress,
-    disablePin: disablePin
+    main: PinMain,
+    render: renderPins,
+    reset: resetMainPinAddress,
+    disable: disablePin
   };
 })();

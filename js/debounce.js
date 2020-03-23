@@ -16,6 +16,6 @@
   }
 
   window.debounce = {
-    debounce: debounce,
+    delay: debounce,
   };
 })();

@@ -3,7 +3,7 @@
 (function () {
   var FORM = document.querySelector('.ad-form');
 
-  var FORM_ELEMENTS = {
+  var FormElements = {
     TITLE_INPUT: FORM.querySelector('#title'),
     PRICE_INPUT: FORM.querySelector('#price'),
     ADDRESS_INPUT: FORM.querySelector('#address'),
@@ -31,12 +31,12 @@
     FORM.addEventListener('submit', submitFormHandler);
     FORM.addEventListener('reset', resetFormHandler);
     FORM.classList.remove('ad-form--disabled');
-    window.util.enableElements(FORM_ELEMENTS.FIELDS);
+    window.util.enableElements(FormElements.FIELDS);
   }
 
   function disableForm() {
     FORM.classList.add('ad-form--disabled');
-    window.util.disableElements(FORM_ELEMENTS.FIELDS);
+    window.util.disableElements(FormElements.FIELDS);
   }
 
   function submitFormHandler(evt) {
@@ -48,13 +48,13 @@
     disableForm();
     resetUserPic();
     resetHousePic();
-    window.validation.disableValidation();
+    window.validation.disable();
     window.util.togglePage();
-    window.map.disableMap();
-    window.pins.resetMainPinAddress();
+    window.map.disable();
+    window.pins.reset();
 
-    if (window.filter.isFilterActive()) {
-      window.filter.disableFilterForm();
+    if (window.filter.isActive()) {
+      window.filter.disable();
       window.pins.disableListening();
     }
 
@@ -81,7 +81,7 @@
   }
 
   function uploadUserPicHandler(evt) {
-    FORM_ELEMENTS.USER_PIC_PREVIEW.src = evt.target.result;
+    FormElements.USER_PIC_PREVIEW.src = evt.target.result;
   }
 
   function uploadHousePicHandler(evt) {
@@ -89,17 +89,17 @@
     var node = document.createElement('img');
     node.src = evt.target.result;
     node.alt = 'Фотография жилья';
-    node.width = (parseInt(getComputedStyle(FORM_ELEMENTS.HOUSE_PIC_PREVIEW).width, 10)).toString();
-    node.height = (parseInt(getComputedStyle(FORM_ELEMENTS.HOUSE_PIC_PREVIEW).height, 10)).toString();
-    FORM_ELEMENTS.HOUSE_PIC_PREVIEW.insertAdjacentElement('afterbegin', node);
+    node.width = (parseInt(getComputedStyle(FormElements.HOUSE_PIC_PREVIEW).width, 10)).toString();
+    node.height = (parseInt(getComputedStyle(FormElements.HOUSE_PIC_PREVIEW).height, 10)).toString();
+    FormElements.HOUSE_PIC_PREVIEW.insertAdjacentElement('afterbegin', node);
   }
 
   function resetHousePic() {
-    FORM_ELEMENTS.HOUSE_PIC_PREVIEW.innerHTML = '';
+    FormElements.HOUSE_PIC_PREVIEW.innerHTML = '';
   }
 
   function resetUserPic() {
-    FORM_ELEMENTS.USER_PIC_PREVIEW.src = DEFAULT_USER_PIC_SRC;
+    FormElements.USER_PIC_PREVIEW.src = DEFAULT_USER_PIC_SRC;
   }
 
   function successPopUpEscHandler(evt) {
@@ -156,11 +156,9 @@
   }
 
   window.form = {
-    form: FORM,
     uploadHousePicHandler: uploadHousePicHandler,
     uploadUserPicHandler: uploadUserPicHandler,
-    formElements: FORM_ELEMENTS,
-    activateForm: activateForm,
-    disableForm: disableForm
+    elements: FormElements,
+    activate: activateForm,
   };
 })();

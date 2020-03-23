@@ -7,7 +7,7 @@
   var filteredOffers = [];
   var filterStatus = false;
 
-  var FILTER_ELEMENTS = {
+  var FilterElements = {
     TYPES_SELECT: FILTER.querySelector('#housing-type'),
     PRICE_SELECT: FILTER.querySelector('#housing-price'),
     ROOMS_SELECT: FILTER.querySelector('#housing-rooms'),
@@ -20,25 +20,25 @@
     filterStatus = true;
     window.pins.enableListening();
     updatePins();
-    FILTER.addEventListener('change', window.debounce.debounce(function () {
+    FILTER.addEventListener('change', window.debounce.delay(function () {
       updatePins();
     }));
-    window.util.enableElements(FILTER_ELEMENTS.FIELDS);
+    window.util.enableElements(FilterElements.FIELDS);
   }
 
   function disableFilterForm() {
     FILTER.removeEventListener('change', updatePins);
     FILTER.reset();
-    window.util.disableElements(FILTER_ELEMENTS.FIELDS);
+    window.util.disableElements(FilterElements.FIELDS);
   }
 
   function updatePins() {
-    filteredOffers = filterFields(window.data.getData());
-    window.cards.removeCard();
-    window.pins.renderPins(filteredOffers);
+    filteredOffers = filterFields(window.data.getInfo());
+    window.cards.remove();
+    window.pins.render(filteredOffers);
   }
 
-  function getfilteredOffers() {
+  function getFilteredOffers() {
     return filteredOffers;
   }
 
@@ -55,7 +55,7 @@
   }
 
   function filterPrice(offer) {
-    switch (FILTER_ELEMENTS.PRICE_SELECT.value) {
+    switch (FilterElements.PRICE_SELECT.value) {
       case 'any':
         return true;
       case 'middle':
@@ -71,7 +71,7 @@
 
   function filterFeatures(offer) {
     return (
-      Array.from(FILTER_ELEMENTS.FEATURES_SELECT).filter(function (feature) {
+      Array.from(FilterElements.FEATURES_SELECT).filter(function (feature) {
         return feature.checked;
       }).every(function (checkedFeature) {
         return offer.offer.features.includes(checkedFeature.value);
@@ -80,15 +80,15 @@
   }
 
   function filterType(offer) {
-    return FILTER_ELEMENTS.TYPES_SELECT.value !== 'any' ? offer.offer.type === FILTER_ELEMENTS.TYPES_SELECT.value : true;
+    return FilterElements.TYPES_SELECT.value !== 'any' ? offer.offer.type === FilterElements.TYPES_SELECT.value : true;
   }
 
   function filterRooms(offer) {
-    return FILTER_ELEMENTS.ROOMS_SELECT.value !== 'any' ? offer.offer.rooms === parseInt(FILTER_ELEMENTS.ROOMS_SELECT.value, 10) : true;
+    return FilterElements.ROOMS_SELECT.value !== 'any' ? offer.offer.rooms === parseInt(FilterElements.ROOMS_SELECT.value, 10) : true;
   }
 
   function filterGuests(offer) {
-    return FILTER_ELEMENTS.GUESTS_SELECT.value !== 'any' ? offer.offer.guests === parseInt(FILTER_ELEMENTS.GUESTS_SELECT.value, 10) : true;
+    return FilterElements.GUESTS_SELECT.value !== 'any' ? offer.offer.guests === parseInt(FilterElements.GUESTS_SELECT.value, 10) : true;
   }
 
   function isFilterActive() {
@@ -96,10 +96,10 @@
   }
 
   window.filter = {
-    filterFields: FILTER_ELEMENTS.FIELDS,
-    isFilterActive: isFilterActive,
-    getfilteredOffers: getfilteredOffers,
-    activateFilterForm: activateFilterForm,
-    disableFilterForm: disableFilterForm
+    apply: FilterElements.FIELDS,
+    isActive: isFilterActive,
+    getFilteredOffers: getFilteredOffers,
+    activate: activateFilterForm,
+    disable: disableFilterForm
   };
 })();

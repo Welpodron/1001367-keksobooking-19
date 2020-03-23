@@ -2,7 +2,7 @@
 
 (function () {
 
-  var COORDINATES = {
+  var Coordinates = {
     X_MIN: 0,
     X_MAX: parseInt(getComputedStyle(document.body).maxWidth, 10),
     Y_MIN: 130,
@@ -15,7 +15,7 @@
   var offers = [];
 
   function downloadData() {
-    window.xml.download(successHandler, errorHandler, window.filter.activateFilterForm);
+    window.xml.download(successHandler, errorHandler, window.filter.activate);
   }
 
   function successHandler(data, callback) {
@@ -73,12 +73,12 @@
   }
 
   window.data = {
-    downloadData: downloadData,
-    getData: getData,
+    download: downloadData,
+    getInfo: getData,
     getBuildingType: getBuildingType,
     getBuildingMinPrice: getBuildingMinPrice,
     roomsDeclension: ROOMS_DECLENSION,
     guestsDeclension: GUESTS_DECLENSION,
-    coordinates: COORDINATES
+    coordinates: Coordinates
   };
 })();
