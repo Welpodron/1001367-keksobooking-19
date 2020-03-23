@@ -2,7 +2,7 @@
 
 (function () {
 
-  var pin = {
+  var pinBase = {
     template: document.querySelector('#pin').content.querySelector('button'),
     width: 50,
     height: 70
@@ -28,10 +28,10 @@
   var startingYCoord = 0;
 
   function generatePin(advertisement, index) {
-    var pinTemplate = pin.template.cloneNode(true);
+    var pinTemplate = pinBase.template.cloneNode(true);
     pinTemplate.pinIndex = index;
-    pinTemplate.style.left = advertisement.location.x - pin.width / 2 + 'px';
-    pinTemplate.style.top = advertisement.location.y - pin.height + 'px';
+    pinTemplate.style.left = advertisement.location.x - pinBase.width / 2 + 'px';
+    pinTemplate.style.top = advertisement.location.y - pinBase.height + 'px';
     pinTemplate.querySelector('img').src = advertisement.author.avatar;
     pinTemplate.querySelector('img').alt = advertisement.offer.title;
     return pinTemplate;
