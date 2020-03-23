@@ -6,15 +6,15 @@
   var DEFAULT_PRICE_PLACEHOLDER = '1 000';
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var guests = window.form.elements.GUESTS_SELECT;
-  var types = window.form.elements.TYPES_SELECT;
-  var price = window.form.elements.PRICE_INPUT;
-  var timeIn = window.form.elements.TIME_IN;
-  var timeOut = window.form.elements.TIME_OUT;
-  var rooms = window.form.elements.ROOMS_SELECT;
-  var submitButton = window.form.elements.SUBMIT;
-  var userPicInput = window.form.elements.USER_PIC;
-  var housePicInput = window.form.elements.HOUSE_PIC;
+  var guests = window.form.elements.guestsSelect;
+  var types = window.form.elements.typesSelect;
+  var price = window.form.elements.priceInput;
+  var timeIn = window.form.elements.timeIn;
+  var timeOut = window.form.elements.timeOut;
+  var rooms = window.form.elements.roomsSelect;
+  var submitButton = window.form.elements.submit;
+  var userPicInput = window.form.elements.userPic;
+  var housePicInput = window.form.elements.housePic;
 
   var minPrice = 0;
 

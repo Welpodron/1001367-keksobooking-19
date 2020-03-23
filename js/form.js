@@ -1,42 +1,42 @@
 'use strict';
 
 (function () {
-  var FORM = document.querySelector('.ad-form');
+  var form = document.querySelector('.ad-form');
 
-  var FormElements = {
-    TITLE_INPUT: FORM.querySelector('#title'),
-    PRICE_INPUT: FORM.querySelector('#price'),
-    ADDRESS_INPUT: FORM.querySelector('#address'),
-    TYPES_SELECT: FORM.querySelector('#type'),
-    ROOMS_SELECT: FORM.querySelector('#room_number'),
-    GUESTS_SELECT: FORM.querySelector('#capacity'),
-    TIME_IN: FORM.querySelector('#timein'),
-    TIME_OUT: FORM.querySelector('#timeout'),
-    RESET: FORM.querySelector('.ad-form__reset'),
-    SUBMIT: FORM.querySelector('.ad-form__submit'),
-    USER_PIC: FORM.querySelector('#avatar'),
-    USER_PIC_PREVIEW: FORM.querySelector('.ad-form-header__preview img'),
-    HOUSE_PIC: FORM.querySelector('#images'),
-    HOUSE_PIC_PREVIEW: FORM.querySelector('.ad-form__photo'),
-    FIELDS: Array.from(FORM.children)
+  var formElements = {
+    titleInput: form.querySelector('#title'),
+    priceInput: form.querySelector('#price'),
+    addressInput: form.querySelector('#address'),
+    typesSelect: form.querySelector('#type'),
+    roomsSelect: form.querySelector('#room_number'),
+    guestsSelect: form.querySelector('#capacity'),
+    timeIn: form.querySelector('#timein'),
+    timeOut: form.querySelector('#timeout'),
+    reset: form.querySelector('.ad-form__reset'),
+    submit: form.querySelector('.ad-form__submit'),
+    userPic: form.querySelector('#avatar'),
+    userPicPreview: form.querySelector('.ad-form-header__preview img'),
+    housePic: form.querySelector('#images'),
+    housePicPreview: form.querySelector('.ad-form__photo'),
+    fields: Array.from(form.children)
   };
 
   var DEFAULT_USER_PIC_SRC = 'img/muffin-grey.svg';
 
-  var NODE_TEMPLATE_TARGET = document.querySelector('main');
-  var SUCCESS_SUBMIT_TEMPLATE = document.querySelector('#success').content.querySelector('.success');
-  var ERROR_SUBMIT_TEMPLATE = document.querySelector('#error').content.querySelector('.error');
+  var nodeTemplateTarget = document.querySelector('main');
+  var successSubmitTemplate = document.querySelector('#success').content.querySelector('.success');
+  var errorSubmitTemplate = document.querySelector('#error').content.querySelector('.error');
 
   function activateForm() {
-    FORM.addEventListener('submit', submitFormHandler);
-    FORM.addEventListener('reset', resetFormHandler);
-    FORM.classList.remove('ad-form--disabled');
-    window.util.enableElements(FormElements.FIELDS);
+    form.addEventListener('submit', submitFormHandler);
+    form.addEventListener('reset', resetFormHandler);
+    form.classList.remove('ad-form--disabled');
+    window.util.enableElements(formElements.fields);
   }
 
   function disableForm() {
-    FORM.classList.add('ad-form--disabled');
-    window.util.disableElements(FormElements.FIELDS);
+    form.classList.add('ad-form--disabled');
+    window.util.disableElements(formElements.fields);
   }
 
   function submitFormHandler(evt) {
@@ -58,30 +58,30 @@
       window.pins.disableListening();
     }
 
-    FORM.removeEventListener('submit', submitFormHandler);
-    FORM.removeEventListener('reset', resetFormHandler);
+    form.removeEventListener('submit', submitFormHandler);
+    form.removeEventListener('reset', resetFormHandler);
   }
 
   function successSubmitHandler() {
-    FORM.reset();
-    var node = SUCCESS_SUBMIT_TEMPLATE.cloneNode(true);
+    form.reset();
+    var node = successSubmitTemplate.cloneNode(true);
     document.addEventListener('keydown', successPopUpEscHandler);
     document.addEventListener('click', successPopUpClickHandler);
-    NODE_TEMPLATE_TARGET.insertAdjacentElement('afterbegin', node);
+    nodeTemplateTarget.insertAdjacentElement('afterbegin', node);
   }
 
   function errorSubmitHandler() {
-    var node = ERROR_SUBMIT_TEMPLATE.cloneNode(true);
+    var node = errorSubmitTemplate.cloneNode(true);
     var nodeCloseBtn = node.querySelector('.error__button');
     nodeCloseBtn.addEventListener('keydown', errorPopUpButtonEnterHandler);
     nodeCloseBtn.addEventListener('click', errorPopUpButtonClickHandler);
     document.addEventListener('keydown', errorPopUpEscHandler);
     document.addEventListener('click', errorPopUpClickHandler);
-    NODE_TEMPLATE_TARGET.insertAdjacentElement('afterbegin', node);
+    nodeTemplateTarget.insertAdjacentElement('afterbegin', node);
   }
 
   function uploadUserPicHandler(evt) {
-    FormElements.USER_PIC_PREVIEW.src = evt.target.result;
+    formElements.userPicPreview.src = evt.target.result;
   }
 
   function uploadHousePicHandler(evt) {
@@ -89,17 +89,17 @@
     var node = document.createElement('img');
     node.src = evt.target.result;
     node.alt = 'Фотография жилья';
-    node.width = (parseInt(getComputedStyle(FormElements.HOUSE_PIC_PREVIEW).width, 10)).toString();
-    node.height = (parseInt(getComputedStyle(FormElements.HOUSE_PIC_PREVIEW).height, 10)).toString();
-    FormElements.HOUSE_PIC_PREVIEW.insertAdjacentElement('afterbegin', node);
+    node.width = (parseInt(getComputedStyle(formElements.housePicPreview).width, 10)).toString();
+    node.height = (parseInt(getComputedStyle(formElements.housePicPreview).height, 10)).toString();
+    formElements.housePicPreview.insertAdjacentElement('afterbegin', node);
   }
 
   function resetHousePic() {
-    FormElements.HOUSE_PIC_PREVIEW.innerHTML = '';
+    formElements.housePicPreview.innerHTML = '';
   }
 
   function resetUserPic() {
-    FormElements.USER_PIC_PREVIEW.src = DEFAULT_USER_PIC_SRC;
+    formElements.userPicPreview.src = DEFAULT_USER_PIC_SRC;
   }
 
   function successPopUpEscHandler(evt) {
@@ -158,7 +158,7 @@
   window.form = {
     uploadHousePicHandler: uploadHousePicHandler,
     uploadUserPicHandler: uploadUserPicHandler,
-    elements: FormElements,
+    elements: formElements,
     activate: activateForm,
   };
 })();

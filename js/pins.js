@@ -2,39 +2,39 @@
 
 (function () {
 
-  var Pin = {
-    TEMPLATE: document.querySelector('#pin').content.querySelector('button'),
-    WIDTH: 50,
-    HEIGHT: 70
+  var pin = {
+    template: document.querySelector('#pin').content.querySelector('button'),
+    width: 50,
+    height: 70
   };
 
-  var PinMain = {
-    SELECTOR: document.querySelector('.map__pin--main'),
-    WIDTH: 65,
-    HEIGHT: 65,
-    FULL_HEIGHT: 81,
-    DEFAULT_X: '570px',
-    DEFAULT_Y: '375px'
+  var pinMain = {
+    selector: document.querySelector('.map__pin--main'),
+    width: 65,
+    height: 65,
+    fullHeight: 81,
+    defaultX: '570px',
+    defaultY: '375px'
   };
 
   var MAX_PINS = 5;
 
-  var PINS_MAP = document.querySelector('.map__pins');
+  var pinsMap = document.querySelector('.map__pins');
 
-  PinMain.SELECTOR.addEventListener('mousedown', mainPinClickHandler);
-  PinMain.SELECTOR.addEventListener('keydown', mainPinEnterHandler);
+  pinMain.selector.addEventListener('mousedown', mainPinClickHandler);
+  pinMain.selector.addEventListener('keydown', mainPinEnterHandler);
 
   var startingXCoord = 0;
   var startingYCoord = 0;
 
   function generatePin(advertisement, index) {
-    var pin = Pin.TEMPLATE.cloneNode(true);
-    pin.pinIndex = index;
-    pin.style.left = advertisement.location.x - Pin.WIDTH / 2 + 'px';
-    pin.style.top = advertisement.location.y - Pin.HEIGHT + 'px';
-    pin.querySelector('img').src = advertisement.author.avatar;
-    pin.querySelector('img').alt = advertisement.offer.title;
-    return pin;
+    var pinTemplate = pin.template.cloneNode(true);
+    pinTemplate.pinIndex = index;
+    pinTemplate.style.left = advertisement.location.x - pin.width / 2 + 'px';
+    pinTemplate.style.top = advertisement.location.y - pin.height + 'px';
+    pinTemplate.querySelector('img').src = advertisement.author.avatar;
+    pinTemplate.querySelector('img').alt = advertisement.offer.title;
+    return pinTemplate;
   }
 
   function activatePage() {
@@ -48,19 +48,19 @@
   }
 
   function enableListening() {
-    PINS_MAP.addEventListener('click', pinClickHandler);
-    PINS_MAP.addEventListener('keydown', pinEnterHandler);
+    pinsMap.addEventListener('click', pinClickHandler);
+    pinsMap.addEventListener('keydown', pinEnterHandler);
   }
 
   function disableListening() {
-    PINS_MAP.removeEventListener('click', pinClickHandler);
-    PINS_MAP.removeEventListener('keydown', pinEnterHandler);
+    pinsMap.removeEventListener('click', pinClickHandler);
+    pinsMap.removeEventListener('keydown', pinEnterHandler);
   }
 
   function mainPinClickHandler(evt) {
     if (window.util.isLeftMouseButtonPressed(evt)) {
       activatePage();
-      setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
+      setMainPinAddress(pinMain.selector.style.left, pinMain.selector.style.top);
 
       startingXCoord = evt.clientX;
       startingYCoord = evt.clientY;
@@ -71,10 +71,10 @@
   }
 
   function mainPinMouseMoveHandler(evt) {
-    var minX = window.data.coordinates.X_MIN - PinMain.WIDTH / 2;
-    var maxX = PINS_MAP.offsetWidth - Math.floor(PinMain.WIDTH / 2);
-    var minY = window.data.coordinates.Y_MIN - PinMain.FULL_HEIGHT;
-    var maxY = window.data.coordinates.Y_MAX - PinMain.FULL_HEIGHT;
+    var minX = window.data.coordinates.xMin - pinMain.width / 2;
+    var maxX = pinsMap.offsetWidth - Math.floor(pinMain.width / 2);
+    var minY = window.data.coordinates.yMin - pinMain.fullHeight;
+    var maxY = window.data.coordinates.yMax - pinMain.fullHeight;
 
     var offsetX = startingXCoord - evt.clientX;
     var offsetY = startingYCoord - evt.clientY;
@@ -82,22 +82,22 @@
     startingXCoord = evt.clientX;
     startingYCoord = evt.clientY;
 
-    PinMain.SELECTOR.style.top = PinMain.SELECTOR.offsetTop - offsetY + 'px';
-    PinMain.SELECTOR.style.left = PinMain.SELECTOR.offsetLeft - offsetX + 'px';
+    pinMain.selector.style.top = pinMain.selector.offsetTop - offsetY + 'px';
+    pinMain.selector.style.left = pinMain.selector.offsetLeft - offsetX + 'px';
 
-    if (PinMain.SELECTOR.offsetLeft < minX) {
-      PinMain.SELECTOR.style.left = minX + 'px';
-    } else if (PinMain.SELECTOR.offsetLeft > maxX) {
-      PinMain.SELECTOR.style.left = maxX + 'px';
+    if (pinMain.selector.offsetLeft < minX) {
+      pinMain.selector.style.left = minX + 'px';
+    } else if (pinMain.selector.offsetLeft > maxX) {
+      pinMain.selector.style.left = maxX + 'px';
     }
 
-    if (PinMain.SELECTOR.offsetTop < minY) {
-      PinMain.SELECTOR.style.top = minY + 'px';
-    } else if (PinMain.SELECTOR.offsetTop > maxY) {
-      PinMain.SELECTOR.style.top = maxY + 'px';
+    if (pinMain.selector.offsetTop < minY) {
+      pinMain.selector.style.top = minY + 'px';
+    } else if (pinMain.selector.offsetTop > maxY) {
+      pinMain.selector.style.top = maxY + 'px';
     }
 
-    setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
+    setMainPinAddress(pinMain.selector.style.left, pinMain.selector.style.top);
   }
 
   function mainPinMouseUpHandler() {
@@ -106,22 +106,22 @@
   }
 
   function setMainPinAddress(left, top) {
-    window.form.elements.ADDRESS_INPUT.value = (
-      parseInt(left, 10) + Math.floor(PinMain.WIDTH / 2) +
+    window.form.elements.addressInput.value = (
+      parseInt(left, 10) + Math.floor(pinMain.width / 2) +
       ', ' +
-      (parseInt(top, 10) + PinMain.FULL_HEIGHT)
+      (parseInt(top, 10) + pinMain.fullHeight)
     );
   }
 
   function resetMainPinAddress() {
-    PinMain.SELECTOR.style.top = PinMain.DEFAULT_Y;
-    PinMain.SELECTOR.style.left = PinMain.DEFAULT_X;
+    pinMain.selector.style.top = pinMain.defaultY;
+    pinMain.selector.style.left = pinMain.defaultX;
   }
 
   function mainPinEnterHandler(evt) {
     if (window.util.isEnterPressed(evt)) {
       activatePage();
-      setMainPinAddress(PinMain.SELECTOR.style.left, PinMain.SELECTOR.style.top);
+      setMainPinAddress(pinMain.selector.style.left, pinMain.selector.style.top);
     }
   }
 
@@ -156,7 +156,7 @@
   }
 
   function removePins() {
-    var pins = PINS_MAP.querySelectorAll('.map__pin:not(.map__pin--main)');
+    var pins = pinsMap.querySelectorAll('.map__pin:not(.map__pin--main)');
     pins.forEach(function (pin) {
       pin.remove();
     });
@@ -171,13 +171,13 @@
     }
 
     removePins();
-    PINS_MAP.appendChild(fragment);
+    pinsMap.appendChild(fragment);
   }
 
   window.pins = {
     enableListening: enableListening,
     disableListening: disableListening,
-    main: PinMain,
+    main: pinMain,
     render: renderPins,
     reset: resetMainPinAddress,
     disable: disablePin
